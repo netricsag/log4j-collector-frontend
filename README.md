@@ -28,4 +28,4 @@ After that:
 
 ### Dashboard overview
 
-![alt text](https://github.com/bluestoneag/log4j-collector-frontend/tree/main/assets/dashboard.jpg "Dashboard")
+![alt text](https://raw.githubusercontent.com/bluestoneag/log4j-collector-frontend/main/assets/dashboard.jpg "Dashboard")
