@@ -1,4 +1,3 @@
-import { getData } from "./api";
 import { useState, useEffect } from "react";
 import { DataTable } from "./DataTable";
 import Search from "./Search";
