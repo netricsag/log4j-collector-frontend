@@ -1,6 +1,7 @@
 services:
   frontend:
     container_name: log4j-collector-frontend
+    image: ghcr.io/bluestoneag/log4j-collector-frontend:latest
     build:
       context: .
       args:
