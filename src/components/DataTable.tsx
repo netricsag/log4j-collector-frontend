@@ -1,34 +1,41 @@
 import { DetailsList, IGroup, SelectionMode, Stack } from "@fluentui/react";
+import { useEffect, useState } from "react";
 
 interface Props {
   vulnData: any[];
 }
 
 export const DataTable: React.FC<Props> = (props) => {
-  const itemsForRender = new Array<any>();
+  const [groupState, setGroupState] = useState(new Array<IGroup>());
+  const [itemToRenderState, setItemToRenderState] = useState(Array<any>());
 
-  const groups = new Array<IGroup>();
-  props.vulnData.forEach((server) => {
-    let index: number = 0;
+  useEffect(() => {
+    const itemsForRender = new Array<any>();
+    const groups = new Array<IGroup>();
+    props.vulnData.forEach((server) => {
+      let index: number = 0;
 
-    if (itemsForRender.length > 0) {
-      index = itemsForRender.length - 1;
-    } else {
-      index = itemsForRender.length;
-    }
-
-    server.vulnerableFiles.forEach((file: any) => {
-      itemsForRender.push({ vulnerableFiles: file.fileName });
+      if (itemsForRender.length > 0) {
+        index = itemsForRender.length;
+      } else {
+        index = itemsForRender.length;
+      }
+      server.vulnerableFiles.forEach((file: any) => {
+        itemsForRender.push({ vulnerableFiles: file.fileName });
+      });
+      groups.push({
+        key: server.serverName,
+        name: server.serverName,
+        level: 0,
+        count: server.vulnerableFiles.length,
+        startIndex: index,
+        isCollapsed: true,
+      });
     });
 
-    groups.push({
-      key: server.serverName,
-      name: server.serverName,
-      level: 0,
-      count: server.vulnerableFiles.length,
-      startIndex: index,
-    });
-  });
+    setGroupState(groups);
+    setItemToRenderState(itemsForRender);
+  }, [props.vulnData]);
 
   return (
     <Stack
@@ -36,8 +43,8 @@ export const DataTable: React.FC<Props> = (props) => {
       style={{ minWidth: "100%", backgroundColor: "white" }}
     >
       <DetailsList
-        items={itemsForRender}
-        groups={groups}
+        items={itemToRenderState}
+        groups={groupState}
         groupProps={{ isAllGroupsCollapsed: true }}
         columns={[
           {

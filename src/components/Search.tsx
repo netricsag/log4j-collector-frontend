@@ -1,11 +1,15 @@
 import { SearchBox } from "@fluentui/react/lib/SearchBox";
 
-const Search = () => {
+interface ISearchProps {
+  onSearch: (value: string | undefined) => void;
+}
+
+const Search = (props: ISearchProps) => {
   return (
     <SearchBox
       style={{ minWidth: 800 }}
       placeholder="Search"
-      onSearch={(newValue) => console.log("value is " + newValue)}
+      onChange={(elem, newValue) => props.onSearch(newValue)}
     />
   );
 };

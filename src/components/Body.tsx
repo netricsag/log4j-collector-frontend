@@ -5,15 +5,34 @@ import { Stack } from "@fluentui/react";
 
 function Body() {
   const [dataList, setDataList]: any[] = useState([]);
+  const [originalList, setoriginalList]: any[] = useState([]);
   const apiAddress: string = process.env.REACT_APP_API_ADDRESS as string;
 
   useEffect(() => {
-    (async () => {
-      const res = await fetch("http://" + apiAddress + "/api/v1/reports");
-      const json = await res.json();
-      setDataList(json);
-    })();
-  });
+    fetch("http://" + apiAddress + "/api/v1/reports")
+      .then((res) => {
+        res.json().then((data) => {
+          setoriginalList(data);
+          setDataList(data);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const onSearch = (value: string | undefined) => {
+    if (!value) {
+      setDataList([...originalList]);
+    } else {
+      setDataList(
+        originalList.filter((dataItem: any) => {
+          const itemName = dataItem.serverName.toLowerCase();
+          return itemName.includes(value);
+        })
+      );
+    }
+  };
 
   return (
     <Stack
@@ -22,7 +41,7 @@ function Body() {
       tokens={{ childrenGap: "l1", padding: "l2" }}
     >
       <Stack.Item>
-        <Search />
+        <Search onSearch={onSearch} />
       </Stack.Item>
       <Stack.Item>
         <DataTable vulnData={dataList} />
