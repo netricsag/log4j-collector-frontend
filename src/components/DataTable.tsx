@@ -8,31 +8,48 @@ interface Props {
 export const DataTable: React.FC<Props> = (props) => {
   const [groupState, setGroupState] = useState(new Array<IGroup>());
   const [itemToRenderState, setItemToRenderState] = useState(Array<any>());
+  const [cleanServersState, setcleanServersState] = useState(Array<any>());
 
   useEffect(() => {
     const itemsForRender = new Array<any>();
     const groups = new Array<IGroup>();
+    const cleanServers = new Array<any>();
+
     props.vulnData.forEach((server) => {
-      let index: number = 0;
+      if (server.vulnerableFiles.length !== 0) {
+        let index: number = 0;
 
-      if (itemsForRender.length > 0) {
-        index = itemsForRender.length;
+        if (itemsForRender.length > 0) {
+          index = itemsForRender.length;
+        } else {
+          index = itemsForRender.length;
+        }
+        server.vulnerableFiles.forEach((file: any) => {
+          itemsForRender.push({ vulnerableFiles: file.fileName });
+        });
+        groups.push({
+          key: server.serverName,
+          name: server.serverName,
+          level: 0,
+          count: server.vulnerableFiles.length,
+          startIndex: index,
+          isCollapsed: true,
+        });
       } else {
-        index = itemsForRender.length;
+        cleanServers.push({ vulnerableFiles: server.serverName });
       }
-      server.vulnerableFiles.forEach((file: any) => {
-        itemsForRender.push({ vulnerableFiles: file.fileName });
-      });
-      groups.push({
-        key: server.serverName,
-        name: server.serverName,
-        level: 0,
-        count: server.vulnerableFiles.length,
-        startIndex: index,
-        isCollapsed: true,
-      });
     });
-
+    groups.push({
+      key: "clnServers",
+      name: "Clean servers",
+      level: 0,
+      count: cleanServers.length,
+      startIndex: itemsForRender.length,
+      isCollapsed: true,
+    });
+    console.log(itemsForRender);
+    console.log(cleanServers);
+    cleanServers.forEach((cs) => itemsForRender.push(cs));
     setGroupState(groups);
     setItemToRenderState(itemsForRender);
   }, [props.vulnData]);
