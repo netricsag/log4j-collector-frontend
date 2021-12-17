@@ -8,7 +8,6 @@ interface Props {
 export const DataTable: React.FC<Props> = (props) => {
   const [groupState, setGroupState] = useState(new Array<IGroup>());
   const [itemToRenderState, setItemToRenderState] = useState(Array<any>());
-  const [cleanServersState, setcleanServersState] = useState(Array<any>());
 
   useEffect(() => {
     const itemsForRender = new Array<any>();
@@ -39,6 +38,7 @@ export const DataTable: React.FC<Props> = (props) => {
         cleanServers.push({ vulnerableFiles: server.serverName });
       }
     });
+
     groups.push({
       key: "clnServers",
       name: "Clean servers",
@@ -47,8 +47,7 @@ export const DataTable: React.FC<Props> = (props) => {
       startIndex: itemsForRender.length,
       isCollapsed: true,
     });
-    console.log(itemsForRender);
-    console.log(cleanServers);
+
     cleanServers.forEach((cs) => itemsForRender.push(cs));
     setGroupState(groups);
     setItemToRenderState(itemsForRender);
