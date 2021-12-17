@@ -37,7 +37,7 @@ function Body() {
   return (
     <Stack
       horizontalAlign="center"
-      style={{ backgroundColor: "#F4F5F7" }}
+      style={{ backgroundColor: "#F4F5F7", height: "92vh" }}
       tokens={{ childrenGap: "l1", padding: "l2" }}
     >
       <Stack.Item>
