@@ -8,15 +8,19 @@
 This is a simple frontend built with React and Fluent UI to visualize the data stored in the log4j-collector API.
 The API can be found at:
 
-- https://github.com/bluestoneag/log4j-collector
+- [log4j-collector](https://github.com/bluestoneag/log4j-collector)
 
-## Arguments
+## Scanning
+For the scanning process and data collection, the following tool can be used:
+- [log4j-scanner](https://github.com/bluestoneag/log4j-scanner)
 
-- `API_ADDR` - The IP address of the backend API. Can be used like `API_ADDR=192.168.1.1` or with a custom port like `API_ADDR=192.168.0.1:8080`
+## Env Variables
+
+- `API_URL` - The IP address of the backend [log4j-collector](https://github.com/bluestoneag/log4j-collector) API. Can be used like `API_URL=http://192.168.1.10/api/v1/reports` or with a custom port like `API_URL=http://192.168.1.10:8080/api/v1/reports`
 
 ## Docker
 
-This Docker image is best run with a Docker Compose file. Use the `docker-compose-yml` in this repo and customise the API IP address in the arguments.
+This Docker image is best run with a Docker Compose file. Use the `docker-compose-yml` in this repo and customise the API IP address in the environment variables.
 
 First run:
 `docker-compose pull`
