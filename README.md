@@ -16,7 +16,9 @@ For the scanning process and data collection, the following tool can be used:
 
 ## Env Variables
 
-- `API_URL` - The IP address of the backend [log4j-collector](https://github.com/bluestoneag/log4j-collector) API. Can be used like `API_URL=http://192.168.1.10/api/v1/reports` or with a custom port like `API_URL=http://192.168.1.10:8080/api/v1/reports`
+- `API_URL` - The IP address of the backend [log4j-collector](https://github.com/bluestoneag/log4j-collector) API. 
+
+Can be used like `API_URL=http://192.168.1.10/api/v1/reports` or with a custom port like `API_URL=http://192.168.1.10:8080/api/v1/reports`
 
 ## Docker
 
