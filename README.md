@@ -34,4 +34,4 @@ After that:
 
 ### Dashboard overview
 
-![alt text](https://raw.githubusercontent.com/bluestoneag/log4j-collector-frontend/main/assets/dashboard.jpg "Dashboard")
+![alt text](assets/dashboard.png "Dashboard")
