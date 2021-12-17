@@ -46,7 +46,6 @@ function Body() {
     csvContent += ["serverName", "fileName"].join(";") + "\r\n";
 
     dataList.forEach((rowArray: any) => {
-      let row = [];
       rowArray.vulnerableFiles.forEach((file: any) => {
         csvContent += [rowArray.serverName, file.fileName].join(";") + "\r\n";
       });

@@ -12,7 +12,7 @@ export default function Head() {
       style={{ height: "5vh" }}
     >
       <Stack.Item>
-        <a href={"https://netrics.ch"} target={"_blank"}>
+        <a href={"https://netrics.ch"} target={"_blank"} rel={"noopener noreferrer"}>
           <img src={Company} style={{ minHeight: "4vh", maxHeight: "4vh" }} />
         </a>
       </Stack.Item>
@@ -26,9 +26,11 @@ export default function Head() {
           <a
             href={"https://github.com/bluestoneag/log4j-collector-frontend"}
             target={"_blank"}
+            rel={"noopener noreferrer"}
           >
             <img
               src={GitHubLogo}
+              alt="GitHub"
               style={{ minHeight: "4vh", maxHeight: "4vh" }}
             />
           </a>
