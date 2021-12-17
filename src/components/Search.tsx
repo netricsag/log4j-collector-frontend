@@ -7,7 +7,6 @@ interface ISearchProps {
 const Search = (props: ISearchProps) => {
   return (
     <SearchBox
-      style={{ minWidth: 800 }}
       placeholder="Search"
       onChange={(elem, newValue) => props.onSearch(newValue)}
     />

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { DataTable } from "./DataTable";
 import Search from "./Search";
 import { Stack } from "@fluentui/react";
+import { Button } from "./Button";
 
 function Body() {
   const [dataList, setDataList]: any[] = useState([]);
@@ -34,6 +35,28 @@ function Body() {
     }
   };
 
+  const downloadCSV = () => {
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += ["serverName", "fileName"].join(";") + "\r\n";
+
+    dataList.forEach((rowArray: any) => {
+      let row = [];
+      rowArray.vulnerableFiles.forEach((file: any) => {
+        csvContent += [rowArray.serverName, file.fileName].join(";") + "\r\n";
+      });
+    });
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+
+    link.setAttribute("href", encodedUri);
+    link.style.display = "none";
+    link.setAttribute("download", "vulnFileList.csv");
+    link.innerHTML = "Click Here to download";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   return (
     <Stack
       horizontalAlign="center"
@@ -41,7 +64,18 @@ function Body() {
       tokens={{ childrenGap: "l1", padding: "l2" }}
     >
       <Stack.Item>
-        <Search onSearch={onSearch} />
+        <Stack
+          horizontal
+          horizontalAlign="space-between"
+          style={{ minWidth: 855 }}
+        >
+          <Stack.Item grow={3} style={{ paddingRight: "1vw" }}>
+            <Search onSearch={onSearch} />
+          </Stack.Item>
+          <Stack.Item>
+            <Button text="Download CSV" onClick={downloadCSV} />
+          </Stack.Item>
+        </Stack>
       </Stack.Item>
       <Stack.Item>
         <DataTable vulnData={dataList} />
