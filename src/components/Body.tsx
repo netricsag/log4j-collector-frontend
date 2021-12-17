@@ -4,13 +4,19 @@ import Search from "./Search";
 import { Stack } from "@fluentui/react";
 import { Button } from "./Button";
 
+declare global {
+  interface Window {
+    _env_: any;
+  }
+}
+
 function Body() {
   const [dataList, setDataList]: any[] = useState([]);
   const [originalList, setoriginalList]: any[] = useState([]);
-  const apiAddress: string = process.env.REACT_APP_API_ADDRESS as string;
+  const apiUrl: string = window._env_.API_URL as string;
 
   useEffect(() => {
-    fetch("http://" + apiAddress + "/api/v1/reports")
+    fetch(apiUrl)
       .then((res) => {
         res.json().then((data) => {
           setoriginalList(data);
@@ -40,7 +46,6 @@ function Body() {
     csvContent += ["serverName", "fileName"].join(";") + "\r\n";
 
     dataList.forEach((rowArray: any) => {
-      let row = [];
       rowArray.vulnerableFiles.forEach((file: any) => {
         csvContent += [rowArray.serverName, file.fileName].join(";") + "\r\n";
       });

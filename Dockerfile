@@ -1,30 +1,34 @@
-FROM node:14-alpine as build-stage
-
+# => Build container
+FROM node:alpine as builder
 WORKDIR /app
-
-# Arguments
-ARG API_ADDR
-
-# Environment variables 
-ENV PATH /app/node_modules/.bin:$PATH
-ENV REACT_APP_API_ADDRESS=${API_ADDR}
-
-COPY package.json ./
-COPY package-lock.json ./
-RUN npm install
-
+COPY package.json .
+COPY yarn.lock .
+RUN yarn
 COPY . .
-RUN npm run build
+RUN yarn build
 
-#####################
+# => Run container
+FROM nginx:1.15.2-alpine
 
-FROM fitiavana07/nginx-react
+# Nginx config
+RUN rm -rf /etc/nginx/conf.d
+COPY conf /etc/nginx
 
-# Copy built files
-COPY --from=build-stage /app/build /usr/share/nginx/html
+# Static build
+COPY --from=builder /app/build /usr/share/nginx/html/
 
-# 80 for HTTP
+# Default port exposure
 EXPOSE 80
 
-# Run nginx
-CMD nginx -g 'daemon off;'
+# Copy .env file and shell script to container
+WORKDIR /usr/share/nginx/html
+COPY ./env.sh .
+
+# Add bash
+RUN apk add --no-cache bash
+
+# Make our shell script executable
+RUN chmod +x env.sh
+
+# Start Nginx server
+CMD ["/bin/bash", "-c", "/usr/share/nginx/html/env.sh && nginx -g \"daemon off;\""]
