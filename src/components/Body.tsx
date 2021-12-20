@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { DataTable } from "./DataTable";
 import Search from "./Search";
-import { Stack } from "@fluentui/react";
+import { Checkbox, Stack } from "@fluentui/react";
 import { Button } from "./Button";
 
 declare global {
@@ -13,7 +13,13 @@ declare global {
 function Body() {
   const [dataList, setDataList]: any[] = useState([]);
   const [originalList, setoriginalList]: any[] = useState([]);
+  const [includeFiles, setIncludeFiles] = useState(false);
+  const [searchValue, setSearchValue]: any = useState("");
   const apiUrl: string = window._env_.API_URL as string;
+
+  const includeFilesCheckBox = () => {
+    setIncludeFiles(!includeFiles);
+  };
 
   useEffect(() => {
     fetch(apiUrl)
@@ -28,14 +34,32 @@ function Body() {
       });
   }, []);
 
+  useEffect(() => {
+    onSearch(searchValue);
+  }, [includeFiles]);
+
   const onSearch = (value: string | undefined) => {
+    setSearchValue(value);
     if (!value) {
       setDataList([...originalList]);
     } else {
       setDataList(
         originalList.filter((dataItem: any) => {
           const itemName = dataItem.serverName.toLowerCase();
-          return itemName.includes(value);
+
+          if (includeFiles === false) {
+            return itemName.includes(value);
+          } else {
+            var fileNames: any = [];
+
+            dataItem.vulnerableFiles.forEach((file: any) => {
+              fileNames = fileNames.concat(file.fileName.toLowerCase());
+            });
+            return (
+              itemName.includes(value) ||
+              fileNames.some((file: string) => file.includes(value))
+            );
+          }
         })
       );
     }
@@ -79,6 +103,21 @@ function Body() {
           </Stack.Item>
           <Stack.Item>
             <Button text="Download CSV" onClick={downloadCSV} />
+          </Stack.Item>
+        </Stack>
+      </Stack.Item>
+      <Stack.Item>
+        <Stack
+          horizontal
+          horizontalAlign="space-between"
+          style={{ minWidth: 855 }}
+        >
+          <Stack.Item>
+            <Checkbox
+              label="Include filenames in search"
+              checked={includeFiles}
+              onChange={includeFilesCheckBox}
+            />
           </Stack.Item>
         </Stack>
       </Stack.Item>
